@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Script Ant autocontenido para NetBeans y línea de comandos. -->
+<project name="SistemaCONCYTEC" default="default" basedir=".">
+    <description>Compilación y ejecución del Sistema CONCYTEC Java SE.</description>
+
+    <property file="nbproject/project.properties"/>
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="build.classes.dir" value="${build.dir}/classes"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="dist.jar" value="${dist.dir}/SistemaCONCYTEC.jar"/>
+    <property name="dist.javadoc.dir" value="${dist.dir}/javadoc"/>
+    <property name="main.class" value="Main"/>
+    <property name="javac.source" value="17"/>
+    <property name="javac.target" value="17"/>
+    <property name="source.encoding" value="UTF-8"/>
+
+    <target name="default" depends="jar" description="Compila y genera el JAR ejecutable."/>
+
+    <target name="init">
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="init" description="Compila el código fuente Java.">
+        <javac srcdir="${src.dir}" destdir="${build.classes.dir}"
+               includeantruntime="false" encoding="${source.encoding}"
+               source="${javac.source}" target="${javac.target}">
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile" description="Genera el JAR ejecutable.">
+        <jar destfile="${dist.jar}" basedir="${build.classes.dir}" compress="true">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="compile" description="Ejecuta la aplicación Swing.">
+        <java classname="${main.class}" fork="true" failonerror="true">
+            <classpath>
+                <pathelement location="${build.classes.dir}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- NetBeans invoca este target al usar Run File (Shift+F6) sobre Main.java. -->
+    <target name="run-single" depends="run" description="Ejecuta la clase principal seleccionada en NetBeans."/>
+
+    <target name="javadoc" depends="init" description="Genera documentación Javadoc.">
+        <mkdir dir="${dist.javadoc.dir}"/>
+        <javadoc sourcepath="${src.dir}" destdir="${dist.javadoc.dir}"
+                 encoding="${source.encoding}" charset="${source.encoding}"
+                 source="${javac.source}" failonerror="false">
+            <fileset dir="${src.dir}" includes="**/*.java"/>
+        </javadoc>
+    </target>
+
+    <target name="clean" description="Elimina archivos generados por Ant.">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+</project>
