@@ -1,0 +1,134 @@
+classDiagram
+    direction TB
+
+    class Main {
+        +main(String[] args)
+    }
+
+    class FrmPrincipal {
+        -ServicioConcytec servicio
+    }
+
+    class FrmMantenimiento
+    class FrmBusqueda
+    class FrmEstadisticas
+    class TemaConcytec
+    class ModeloTablaInvestigadores
+    class ModeloTablaEstadisticas
+
+    class ServicioConcytec {
+        -TablaHashEncadenada investigadores
+        -TablaHashEncadenada centros
+        -GestorArchivos archivos
+        +importarInvestigadores(File)
+int
+        +registrar(Investigador)
+        +actualizar(Investigador)
+        +eliminar(String)
+        +buscarInvestigadores(...)
+        +calcularEstadistica(String)
+    }
+
+    class GestorArchivos {
+        +cargarInvestigadores(File, TablaHashEncadenada)
+int
+        +cargarCentros(File, TablaHashEncadenada)
+int
+        +guardarInvestigadores(File, TablaHashEncadenada)
+        +exportarTexto(File, String, String[], int)
+        +exportarPdf(File, String, String[], int)
+    }
+
+    class ArchivoControlador {
+        +importarInvestigadores(File, TablaHashEncadenada)
+int
+        +importarCentros(File, TablaHashEncadenada)
+int
+        +persistirInvestigadores(File, TablaHashEncadenada)
+    }
+
+    class Investigador {
+        -String codigo
+        -String nombre
+        -String genero
+        -String condicion
+        -String departamento
+        -String provincia
+        -String distrito
+        -String centroId
+        +desdeCampos(String[])
+Investigador
+        +aCsv()
+String
+    }
+
+    class CentroAutorizado {
+        -String codigo
+        -String institucion
+        -String area
+        -String subarea
+        -String disciplina
+        +desdeCampos(String[])
+CentroAutorizado
+    }
+
+    class EstadisticaRegistro {
+        -String categoria
+        -int total
+        +incrementar()
+    }
+
+    class TablaHashEncadenada {
+        -ListaEnlazada cubetas
+        -int cantidad
+        -int colisiones
+        +poner(K, V)
+        +obtener(K)
+        +eliminar(K)
+        +recorrer(Visitante)
+        +factorCarga()
+double
+    }
+
+    class ListaEnlazada {
+        -Nodo cabeza
+        -int cantidad
+        +insertarOReemplazar(K, V)
+boolean
+        +obtener(K)
+        +eliminar(K)
+        +recorrer(Visitante)
+    }
+
+    class Nodo {
+        -clave
+        -valor
+        -Nodo siguiente
+    }
+
+    class Visitante {
+        <<interface>>
+        +visitar(K, V)
+    }
+
+    Main --> FrmPrincipal
+    FrmPrincipal --> FrmMantenimiento
+    FrmPrincipal --> FrmBusqueda
+    FrmPrincipal --> FrmEstadisticas
+    FrmPrincipal --> ServicioConcytec
+
+    FrmMantenimiento --> ServicioConcytec
+    FrmBusqueda --> ServicioConcytec
+    FrmEstadisticas --> ServicioConcytec
+
+    ServicioConcytec --> GestorArchivos
+    ServicioConcytec --> TablaHashEncadenada
+    ServicioConcytec --> Investigador
+    ServicioConcytec --> CentroAutorizado
+    ServicioConcytec --> EstadisticaRegistro
+
+    ArchivoControlador --> GestorArchivos
+
+    TablaHashEncadenada "1" *-- "*" ListaEnlazada
+    ListaEnlazada "1" *-- "*" Nodo
+    TablaHashEncadenada --> Visitante
